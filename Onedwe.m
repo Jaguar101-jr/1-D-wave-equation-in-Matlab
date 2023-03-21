@@ -11,7 +11,9 @@
 clear;
 
 %% Wave Equation: Wtt = (c^2 * Wxx) + f
-
+%% Prepare the movie file
+    vidObj = VideoWriter('WE-1d.avi');
+    open(vidObj);
 %% Domain
 % Space
 Lx=10;
@@ -20,7 +22,7 @@ nx=fix(Lx/dx);
 x=linspace(0, Lx, nx);
  
 %Time
-T=20;
+T=7;
  
 %% Field variable
 % Variables
@@ -29,7 +31,7 @@ wnm1=wn; % w at time n-1
 wnp1=wn; % w at time n+1
  
 % Parameters
-CFL=1; % CFL = c.dt/dx
+CFL=0.1; % CFL = c.dt/dx
 c=1;
 dt=CFL*dx/c;
  
@@ -68,4 +70,14 @@ while(t < T)
     title(sprintf('time elapsed = %.2f' , t));
     axis([0 Lx -0.05 0.05]);
     shg; pause(0.01);
+    xlabel('distance');
+    ylabel('Amplitude');
+    
+ % Write each frame to the file
+       currFrame = getframe(gcf);
+       writeVideo(vidObj,currFrame);
 end
+
+
+%% Close the file
+close(vidObj);
